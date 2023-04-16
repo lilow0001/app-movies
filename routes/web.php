@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/movies' , [\App\Http\Controllers\MovieController::class,'saveInDB_Api']);
+// Route::get('/movies' , [\App\Http\Controllers\MovieController::class,'saveInDB_Api']);
+Route::get('/movie/{id}' , [\App\Http\Controllers\MovieController::class,'getMovie']);
 
 Route::middleware([
     'auth:sanctum',

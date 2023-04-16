@@ -19,6 +19,14 @@ class MovieController extends Controller
         //$response->json()["original_title"]
         return $response->json()['results'];
     }
+    public static function getAll(){
+        $data = Movie::all();
+        return $data;
+    }
+    public function getMovie($id){
+        $data = Movie::find($id);
+        return view('detail',['result' => $data]);
+    }
     public function saveInDB_Api(){
          
         try {
