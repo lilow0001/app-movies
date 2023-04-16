@@ -34,20 +34,53 @@
     position: absolute;
     top: 0;
     left: 0;
+    top: -8px;
+    left: -8px;
 
 }
 .btns{
   display: grid;
     gap: 2px;
 }
-
+.btn{
+  width: 100%;
+}
+.splitPage{
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+.chercher{
+  display: grid;
+    align-content: baseline;
+    gap: 10px;
+    padding: 20px 0;
+}
+.chercher label{
+  margin:0;
+}
+.pagination{
+  justify-content: center;
+}
+.pagination p{
+  margin:0 !important
+}
+.pagintion .sm:flex-1  {
+  gap: 20px;
+}
 
       </style>
   @php
     $movies = App\Http\Controllers\MovieController::getAll();
   @endphp
  
-<div class="container">
+<div class="container splitPage">
+
+<div class="chercher">
+<label for="chercher">Chercher :</label>
+<input type="text" class="form-control" name="chercher" id="chercher" >
+<button type="button" class="btn btn-info " id="rechercher_btn"  onClick="rechercher(event)">Chercher</button> 
+</div>
+
 
 <div class="row ">
 
@@ -55,7 +88,7 @@
    
  
    
-    <div class="col">
+    <div class="col" id="{{$movie->id}}">
     <div class="card">
     <div>
       <a href="{{ url('/movie/' . $movie->id . '') }}">
@@ -70,20 +103,18 @@
         {{ $movie->original_language}}
         </div>
         <div class="btns">
-        
+          
+       
+        @if(date('d/M/Y', strtotime($movie->updated_at)) !=  date("d/M/Y"))
         <a  href="{{ url('/movie-edit/' . $movie->id . '') }}">
           <button type="button" class="btn btn-secondary">Modifier</button>
         </a>
-     
+        @endif
          <button type="button" class="btn btn-danger" id="btn-confirm"  onClick="passData({{$movie->id}},<?php echo "'".csrf_token()."'"; ?>)">Supprimer</button>
         
         
         </div>
         
-        
-        <!-- <p class="card-text">
-         {{$movie->overview}}
-        </p> -->
       </div>
     </div>
   </div>
@@ -91,6 +122,10 @@
  
 @endforeach
 </div>
+
+</div>
+<div class="pagination">
+<?php echo $movies->render(); ?>
 </div>
 
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="mi-modal">
@@ -134,7 +169,34 @@
     $("#mi-modal").modal('hide');
   });
 };
-
+function rechercher(event){
+     console.log($("#chercher").val())
+     textSearch = $("#chercher").val();
+     $('.col').show();
+     if(textSearch.length>0){
+      var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+    if(xhr.readyState == 4 && xhr.status == 200){
+      console.log(JSON.parse(xhr.responseText))
+      if(Array.isArray(JSON.parse(xhr.responseText))){
+        $('.col').hide();
+        JSON.parse(xhr.responseText).forEach(function(item){
+          console.log(item.id)
+          $('#'+item.id).show();
+        });
+      }
+    
+      
+    }
+  }
+    xhr.open("get","/movies/"+textSearch);
+    xhr.setRequestHeader('x-csrf-token', csrftoken); 
+    xhr.send();
+     }
+     
+     
+  
+}
 modalConfirm(function(confirm){
   if(confirm){
     var xhr = new XMLHttpRequest();

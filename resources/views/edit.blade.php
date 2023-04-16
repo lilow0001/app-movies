@@ -18,10 +18,9 @@
   <div class="form-group">
     <label for="vote">Vote</label>
     <select class="form-control" name="vote" id="vote" value="{{$result->vote_average}}">
-    @for ($i = 1; $i <= $result->vote_average; $i++)
-          <option value="{{$i}}" {{ $result->vote_average == $i ? 'selected' : '' }}>{{$i}}</option>
-    @endfor
-    
+        @for ($i = 1; $i <= $result->vote_average; $i++)
+            <option value="{{$i}}" {{ $result->vote_average == $i ? 'selected' : '' }}>{{$i}}</option>
+        @endfor
     </select>
   </div>
  
@@ -30,11 +29,11 @@
     <textarea class="form-control" name="overview" id="overview" rows="3" >{{$result->overview}}</textarea>
   </div>
   <div>
-  @if($errors)
-    @foreach ($errors->all() as $error)
-        <div class="alert alert-danger">{{ $error }}</div>
-    @endforeach
-@endif
+    @if($errors)
+        @foreach ($errors->all() as $error)
+            <div class="alert alert-danger">{{ $error }}</div>
+        @endforeach
+    @endif
   </div>
  <div class="form-group btnModifier">
 

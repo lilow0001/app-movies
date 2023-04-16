@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movie extends Model
 {
-   // use HasFactory;
-    protected $fillable = [
-            'original_language',
-            'original_title',
-            'overview',
-            'popularity',
-            'poster_path',
-            'title',
-            'vote_average',
-    ];
-    
+        // use HasFactory;
+        protected $fillable = [
+                'original_language',
+                'original_title',
+                'overview',
+                'popularity',
+                'poster_path',
+                'title',
+                'vote_average',
+                'updated_at'
+        ];
+
 }

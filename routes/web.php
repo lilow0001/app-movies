@@ -16,11 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-// Route::get('/movies' , [\App\Http\Controllers\MovieController::class,'saveInDB_Api']);
-Route::get('/movie/{id}' , [\App\Http\Controllers\MovieController::class,'getMovie']);
-Route::get('/movie-edit/{id}' , [\App\Http\Controllers\MovieController::class,'getEditMovie']);
-Route::post('/edit/{id}' , [\App\Http\Controllers\MovieController::class,'edit']);
-Route::delete('/delete/{id}' , [\App\Http\Controllers\MovieController::class,'delete']);
+
 
 Route::middleware([
     'auth:sanctum',
@@ -30,4 +26,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/movie/{id}', [\App\Http\Controllers\MovieController::class, 'getMovie']);
+    Route::get('/movie-edit/{id}', [\App\Http\Controllers\MovieController::class, 'getEditMovie']);
+    Route::post('/edit/{id}', [\App\Http\Controllers\MovieController::class, 'edit']);
+    Route::delete('/delete/{id}', [\App\Http\Controllers\MovieController::class, 'delete']);
+    Route::get('/movies/{search}', [\App\Http\Controllers\MovieController::class, 'getAllBySearch']);
 });

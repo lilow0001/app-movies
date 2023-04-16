@@ -13,8 +13,7 @@ class Movies extends Component
      */
     public function __construct()
     {
-        //
-        $valeur = 0;
+        
     }
 
     /**
@@ -22,7 +21,7 @@ class Movies extends Component
      */
     public function render(): View|Closure|string
     {
-     
-        return view('components.movies',['valeur' => 0]);
+       
+        return view('components.movies');
     }
 }
