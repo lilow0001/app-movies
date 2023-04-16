@@ -18,6 +18,9 @@ Route::get('/', function () {
 });
 // Route::get('/movies' , [\App\Http\Controllers\MovieController::class,'saveInDB_Api']);
 Route::get('/movie/{id}' , [\App\Http\Controllers\MovieController::class,'getMovie']);
+Route::get('/movie-edit/{id}' , [\App\Http\Controllers\MovieController::class,'getEditMovie']);
+Route::post('/edit/{id}' , [\App\Http\Controllers\MovieController::class,'edit']);
+Route::delete('/delete/{id}' , [\App\Http\Controllers\MovieController::class,'delete']);
 
 Route::middleware([
     'auth:sanctum',

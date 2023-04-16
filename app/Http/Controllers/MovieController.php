@@ -6,6 +6,10 @@ use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+use Validator;
+use Redirect;
+use Session;
+
 class MovieController extends Controller
 {
     public function index(){
@@ -20,12 +24,61 @@ class MovieController extends Controller
         return $response->json()['results'];
     }
     public static function getAll(){
-        $data = Movie::all();
+        $data = Movie::all()->sortBy('title');
         return $data;
     }
     public function getMovie($id){
         $data = Movie::find($id);
         return view('detail',['result' => $data]);
+    }
+    public function getEditMovie($id){
+        $data = Movie::find($id);
+        return view('edit',['result' => $data]);
+    }
+    public function delete($id){
+        $res = Movie::where('id',$id)->delete();
+        if ($res){
+            $data=[
+            'status'=>'1',
+            'msg'=>'success'
+          ];
+          }else{
+            $data=[
+            'status'=>'0',
+            'msg'=>'fail'
+          ];
+        }
+          return $data;
+        //return View::make('components.movies');
+    }
+    public function edit(Request $request,$id){
+         // validate
+        // read more on validation at http://laravel.com/docs/validation
+        $rules = array(
+            'title'       => 'required|string',
+            'vote'      => 'nullable|numeric',
+            'overview' => 'nullable|string'
+        );
+        $validator = Validator::make($request->all(), $rules);
+
+        // process the login
+        if ($validator->fails()) {
+            //dd($validator->fails());
+            return Redirect::to('movie-edit/' . $id )
+                ->withErrors($validator);
+                
+        } else {
+            // store
+            $movie = Movie::find($id);
+            $movie->title= $request->get('title');
+            $movie->vote_average= $request->get('vote');
+            $movie->overview= $request->get('overview');
+            $movie->save();
+
+            // redirect
+            Session::flash('message', 'Successfully updated movie');
+            return Redirect::to('dashboard');
+        }
     }
     public function saveInDB_Api(){
          
