@@ -9,6 +9,10 @@
 8 - docker compose up
 
 
+Authentification :
+
+-Login : ismailkadiri.ma@gmail.com
+-Password : ismailkad
 
 - remplir la table movies de la BD à partir de API (avec une commande  artisan)
   
